@@ -1,0 +1,2 @@
+#!bin/pash 
+gcc -c $CFILE -o ${CFILE%.c}.o

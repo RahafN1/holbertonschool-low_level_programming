@@ -1,4 +1,4 @@
-#include <stdio.h>   // أدوات الطباعة
+#include <stdio.h>  
 
 /**
  * main - prints the size of different types

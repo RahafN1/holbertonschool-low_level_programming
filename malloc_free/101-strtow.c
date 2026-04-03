@@ -39,6 +39,32 @@ static int word_len(char *str)
 }
 
 /**
+ * fill_word - allocates and fills a single word
+ * @str: pointer to start of word in original string
+ *
+ * Return: pointer to the new word, or NULL on failure
+ */
+static char *fill_word(char *str)
+{
+	char *word;
+	int len;
+	int j;
+
+	len = word_len(str);
+	word = malloc(sizeof(char) * (len + 1));
+	if (word == NULL)
+		return (NULL);
+	j = 0;
+	while (j < len)
+	{
+		word[j] = str[j];
+		j++;
+	}
+	word[j] = '\0';
+	return (word);
+}
+
+/**
  * strtow - splits a string into words
  * @str: the string to split
  *
@@ -49,28 +75,23 @@ char **strtow(char *str)
 	char **words;
 	int wcount;
 	int i;
-	int j;
 	int k;
 
 	if (str == NULL || str[0] == '\0')
 		return (NULL);
-
 	wcount = count_words(str);
 	if (wcount == 0)
 		return (NULL);
-
 	words = malloc(sizeof(char *) * (wcount + 1));
 	if (words == NULL)
 		return (NULL);
-
 	i = 0;
 	k = 0;
 	while (k < wcount)
 	{
 		while (str[i] == ' ')
 			i++;
-
-		words[k] = malloc(sizeof(char) * (word_len(&str[i]) + 1));
+		words[k] = fill_word(&str[i]);
 		if (words[k] == NULL)
 		{
 			while (k--)
@@ -78,18 +99,10 @@ char **strtow(char *str)
 			free(words);
 			return (NULL);
 		}
-
-		j = 0;
 		while (str[i] && str[i] != ' ')
-		{
-			words[k][j] = str[i];
 			i++;
-			j++;
-		}
-		words[k][j] = '\0';
 		k++;
 	}
 	words[k] = NULL;
-
 	return (words);
 }

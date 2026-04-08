@@ -19,7 +19,7 @@ int (*get_op_func(char *s))(int, int)
 	};
 	int i = 0;
 
-	if (!s || s[1] != '\0')  /* <-- تحقق أن السلسلة طولها 1 */
+	if (!s || s[1] != '\0') /* السلسلة يجب أن تكون حرف واحد */
 		return (NULL);
 
 	while (ops[i].op)

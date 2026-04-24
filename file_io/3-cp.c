@@ -1,4 +1,6 @@
+#define _GNU_SOURCE
 #include "main.h"
+#include <stdio.h>
 
 /**
  * close_fd - Closes a file descriptor and exits on failure.

@@ -32,14 +32,11 @@ void print_class(unsigned char *e_ident)
 	switch (e_ident[EI_CLASS])
 	{
 	case ELFCLASS32:
-		printf("ELF32\n");
-		break;
+		printf("ELF32\n"); break;
 	case ELFCLASS64:
-		printf("ELF64\n");
-		break;
+		printf("ELF64\n"); break;
 	case ELFCLASSNONE:
-		printf("none\n");
-		break;
+		printf("none\n"); break;
 	default:
 		printf("<unknown: %x>\n", e_ident[EI_CLASS]);
 	}
@@ -57,14 +54,11 @@ void print_data(unsigned char *e_ident)
 	switch (e_ident[EI_DATA])
 	{
 	case ELFDATA2LSB:
-		printf("2's complement, little endian\n");
-		break;
+		printf("2's complement, little endian\n"); break;
 	case ELFDATA2MSB:
-		printf("2's complement, big endian\n");
-		break;
+		printf("2's complement, big endian\n"); break;
 	case ELFDATANONE:
-		printf("none\n");
-		break;
+		printf("none\n"); break;
 	default:
 		printf("<unknown: %x>\n", e_ident[EI_DATA]);
 	}
@@ -128,7 +122,8 @@ void print_osabi(unsigned char *e_ident)
  */
 void print_abiversion(unsigned char *e_ident)
 {
-	printf("  ABI Version:                       %d\n", e_ident[EI_ABIVERSION]);
+	printf("  ABI Version:                       %d\n",
+		e_ident[EI_ABIVERSION]);
 }
 
 /**
@@ -162,23 +157,58 @@ void print_type(uint16_t e_type, unsigned char *e_ident)
 }
 
 /**
- * print_entry - Prints the ELF entry point address.
- * @e_entry: The entry point address.
- * @e_ident: The ELF identification array.
+ * swap64 - Swaps bytes of a 64-bit value.
+ * @val: The value to swap.
  *
- * Return: void
+ * Return: The byte-swapped value.
  */
-void print_entry(unsigned long e_entry, unsigned char *e_ident)
+uint64_t swap64(uint64_t val)
 {
-	printf("  Entry point address:               ");
-	if (e_ident[EI_CLASS] == ELFCLASS32)
-		printf("0x%x\n", (unsigned int)e_entry);
-	else
-		printf("0x%lx\n", e_entry);
+	unsigned char *b = (unsigned char *)&val;
+	unsigned char tmp;
+	int i;
+
+	for (i = 0; i < 4; i++)
+	{
+		tmp = b[i];
+		b[i] = b[7 - i];
+		b[7 - i] = tmp;
+	}
+	return (val);
 }
 
 /**
- * check_elf - Checks if file is a valid ELF and exits if not.
+ * print_entry - Prints the ELF entry point address.
+ * @header: Pointer to the ELF header.
+ *
+ * Return: void
+ */
+void print_entry(Elf64_Ehdr *header)
+{
+	int is_big = header->e_ident[EI_DATA] == ELFDATA2MSB;
+	int is_32 = header->e_ident[EI_CLASS] == ELFCLASS32;
+	uint64_t entry = header->e_entry;
+
+	printf("  Entry point address:               ");
+	if (is_32)
+	{
+		uint32_t e32 = (uint32_t)entry;
+
+		if (is_big)
+			e32 = ((e32 >> 24) & 0xff) | ((e32 >> 8) & 0xff00) |
+				((e32 << 8) & 0xff0000) | ((e32 << 24) & 0xff000000);
+		printf("0x%x\n", e32);
+	}
+	else
+	{
+		if (is_big)
+			entry = swap64(entry);
+		printf("0x%lx\n", entry);
+	}
+}
+
+/**
+ * check_elf - Checks if file is valid ELF and exits if not.
  * @e_ident: The ELF identification array.
  *
  * Return: void
@@ -228,7 +258,6 @@ int main(int argc, char *argv[])
 	}
 
 	check_elf(header.e_ident);
-
 	printf("ELF Header:\n");
 	print_magic(header.e_ident);
 	print_class(header.e_ident);
@@ -237,7 +266,7 @@ int main(int argc, char *argv[])
 	print_osabi(header.e_ident);
 	print_abiversion(header.e_ident);
 	print_type(header.e_type, header.e_ident);
-	print_entry(header.e_entry, header.e_ident);
+	print_entry(&header);
 
 	close(fd);
 	return (0);

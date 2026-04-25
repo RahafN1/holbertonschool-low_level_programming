@@ -22,6 +22,6 @@ void print_version(unsigned char *e_ident);
 void print_osabi(unsigned char *e_ident);
 void print_abiversion(unsigned char *e_ident);
 void print_type(uint16_t e_type, unsigned char *e_ident);
-void print_entry(unsigned long e_entry, unsigned char *e_ident);
+void print_entry(Elf64_Ehdr *header);
 
 #endif /* MAIN_H */

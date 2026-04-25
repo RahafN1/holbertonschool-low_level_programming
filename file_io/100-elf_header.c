@@ -32,11 +32,14 @@ void print_class(unsigned char *e_ident)
 	switch (e_ident[EI_CLASS])
 	{
 	case ELFCLASS32:
-		printf("ELF32\n"); break;
+		printf("ELF32\n");
+		break;
 	case ELFCLASS64:
-		printf("ELF64\n"); break;
+		printf("ELF64\n");
+		break;
 	case ELFCLASSNONE:
-		printf("none\n"); break;
+		printf("none\n");
+		break;
 	default:
 		printf("<unknown: %x>\n", e_ident[EI_CLASS]);
 	}
@@ -54,11 +57,14 @@ void print_data(unsigned char *e_ident)
 	switch (e_ident[EI_DATA])
 	{
 	case ELFDATA2LSB:
-		printf("2's complement, little endian\n"); break;
+		printf("2's complement, little endian\n");
+		break;
 	case ELFDATA2MSB:
-		printf("2's complement, big endian\n"); break;
+		printf("2's complement, big endian\n");
+		break;
 	case ELFDATANONE:
-		printf("none\n"); break;
+		printf("none\n");
+		break;
 	default:
 		printf("<unknown: %x>\n", e_ident[EI_DATA]);
 	}
@@ -90,25 +96,35 @@ void print_osabi(unsigned char *e_ident)
 	switch (e_ident[EI_OSABI])
 	{
 	case ELFOSABI_SYSV:
-		printf("UNIX - System V\n"); break;
+		printf("UNIX - System V\n");
+		break;
 	case ELFOSABI_HPUX:
-		printf("UNIX - HP-UX\n"); break;
+		printf("UNIX - HP-UX\n");
+		break;
 	case ELFOSABI_NETBSD:
-		printf("UNIX - NetBSD\n"); break;
+		printf("UNIX - NetBSD\n");
+		break;
 	case ELFOSABI_LINUX:
-		printf("UNIX - Linux\n"); break;
+		printf("UNIX - Linux\n");
+		break;
 	case ELFOSABI_SOLARIS:
-		printf("UNIX - Solaris\n"); break;
+		printf("UNIX - Solaris\n");
+		break;
 	case ELFOSABI_IRIX:
-		printf("UNIX - IRIX\n"); break;
+		printf("UNIX - IRIX\n");
+		break;
 	case ELFOSABI_FREEBSD:
-		printf("UNIX - FreeBSD\n"); break;
+		printf("UNIX - FreeBSD\n");
+		break;
 	case ELFOSABI_TRU64:
-		printf("UNIX - TRU64\n"); break;
+		printf("UNIX - TRU64\n");
+		break;
 	case ELFOSABI_ARM:
-		printf("ARM\n"); break;
+		printf("ARM\n");
+		break;
 	case ELFOSABI_STANDALONE:
-		printf("Standalone App\n"); break;
+		printf("Standalone App\n");
+		break;
 	default:
 		printf("<unknown: %x>\n", e_ident[EI_OSABI]);
 	}
@@ -142,15 +158,20 @@ void print_type(uint16_t e_type, unsigned char *e_ident)
 	switch (e_type)
 	{
 	case ET_NONE:
-		printf("NONE (None)\n"); break;
+		printf("NONE (None)\n");
+		break;
 	case ET_REL:
-		printf("REL (Relocatable file)\n"); break;
+		printf("REL (Relocatable file)\n");
+		break;
 	case ET_EXEC:
-		printf("EXEC (Executable file)\n"); break;
+		printf("EXEC (Executable file)\n");
+		break;
 	case ET_DYN:
-		printf("DYN (Shared object file)\n"); break;
+		printf("DYN (Shared object file)\n");
+		break;
 	case ET_CORE:
-		printf("CORE (Core file)\n"); break;
+		printf("CORE (Core file)\n");
+		break;
 	default:
 		printf("<unknown: %x>\n", e_type);
 	}
